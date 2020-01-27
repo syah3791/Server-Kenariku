@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const KontolSchema = new Schema({
+const BurungSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -29,4 +29,4 @@ const KontolSchema = new Schema({
   }
 });
 
-module.exports = Kontol = mongoose.model("kontol", KontolSchema);
+module.exports = Burung = mongoose.model("burung", BurungSchema);

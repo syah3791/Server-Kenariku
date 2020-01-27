@@ -12,9 +12,7 @@ const keys = require("../../config/keys");
 
 // Validation
 const validationRegister = require("../../validation/register");
-const validationLogin = require("../../validation/login");
-
-router.get("/kontol", (req, res) => res.json({ message: "Nehru Kontol" }));
+// const validationLogin = require("../../validation/login");
 
 // Register New User
 router.post("/register", (req, res) => {
@@ -25,7 +23,7 @@ router.post("/register", (req, res) => {
   }
 
   console.log("====================================");
-  console.log("kontol kontol");
+  console.log("valid");
   console.log("====================================");
 
   // Check for user email if exists
@@ -33,7 +31,7 @@ router.post("/register", (req, res) => {
     email: req.body.email
   })
     .then(user => {
-      if (user) {
+      if (!user) {
         // make new user
         const newUser = new User({
           name: req.body.name,
@@ -64,6 +62,59 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post("/kontol_nehru_kecil", (req, res) => res.json(req.body.ukuran));
+// Login User
+router.post("/login", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const { errors, isValid } = validationLogin(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  // find user by email
+  User.findOne({
+    email
+  }).then(user => {
+    if (!user) {
+      return res.status(400).json({
+        email: "user not found"
+      });
+    } else {
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          // create payload
+          const payload = {
+            id: user.id,
+            name: user.name
+          };
+
+          // Sign token
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            {
+              expiresIn: 3600
+            },
+            (err, token) => {
+              res.json({
+                success: true,
+                // use Bearer protocol format
+                token: "Bearer " + token
+              });
+            }
+          );
+        } else {
+          return res.status(400).json({
+            password: "password incorrect"
+          });
+        }
+      });
+    }
+  });
+});
+
+router.post("/nehru_kecil", (req, res) => res.json(req.body.ukuran));
 
 module.exports = router;

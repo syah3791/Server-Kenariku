@@ -16,34 +16,35 @@ app.use(
 app.use(bodyParser.json());
 
 // Routes
-const user = require("./routes/api/user");
+const user = require("./routes/api/User");
+const burung = require("./routes/api/burung");
 // const karyawan = require("./routes/api/employees");
 // const profile = require("./routes/api/profile");
 
 // DB Config
 const db = require("./config/keys").mongoURI;
 
-// Connect to MongoDB
-mongoose.connect(db, { useNewUrlParser: false });
+// // Connect to MongoDB
+// mongoose.connect(db, { useNewUrlParser: false });
 
-mongoose.connection
-  .once("open", () => {
-    console.log("====================================");
-    console.log("mongoDB connected");
-    console.log("====================================");
-  })
-  .on("error", err => {
-    console.log("====================================");
-    console.log("error : ", err);
-    console.log("====================================");
-  });
-
-// mongoose
-//   .connect(db, {
-//     useNewUrlParser: true
+// mongoose.connection
+//   .once("open", () => {
+//     console.log("====================================");
+//     console.log("mongoDB connected");
+//     console.log("====================================");
 //   })
-//   .then(() => console.log("MongoDB Connected"))
-//   .catch(err => console.log(err));
+//   .on("error", err => {
+//     console.log("====================================");
+//     console.log("error : ", err);
+//     console.log("====================================");
+//   });
+
+mongoose
+  .connect(db, {
+    useNewUrlParser: true
+  })
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 // Passport Middleware
 app.use(passport.initialize());
@@ -53,6 +54,7 @@ require("./config/passport")(passport);
 
 // use routes
 app.use("/api/users", user);
+app.use("/api/burung", burung);
 // app.use("/api/employees", karyawan);
 // app.use("/api/profile", profile);
 
