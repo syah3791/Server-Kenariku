@@ -1,7 +1,7 @@
 {
   "name": "kenariservice",
   "version": "1.0.0",
-  "description": "kontoll ngentoott kenari",
+  "description": "kenari",
   "main": "server.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -13,6 +13,7 @@
   "author": "neru",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "concurrently": "^5.0.2",
@@ -24,6 +25,8 @@
     "mongoose": "^5.8.9",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "react-floating-action-button": "^1.0.5",
+    "react-responsive-carousel": "^3.1.51",
     "validator": "^12.1.0"
   },
   "devDependencies": {

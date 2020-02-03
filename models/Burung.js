@@ -26,10 +26,6 @@ const BurungSchema = new Schema({
   jenis_kelamin: {
     type: String,
     required: true
-  },
-  imagename: {
-    type: String,
-    required: true
   }
 });
 

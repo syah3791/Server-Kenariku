@@ -12,7 +12,7 @@ const keys = require("../../config/keys");
 
 // Validation
 const validationRegister = require("../../validation/register");
-// const validationLogin = require("../../validation/login");
+const validationLogin = require("../../validation/login");
 
 // Register New User
 router.post("/register", (req, res) => {
@@ -51,7 +51,7 @@ router.post("/register", (req, res) => {
           });
         });
       } else {
-        return res.status(404).json({ message: "User not Found kontol!!" });
+        return res.status(404).json({ message: "User already registered!" });
       }
     })
     .catch(err => {
