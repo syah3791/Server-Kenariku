@@ -10,6 +10,19 @@ router.get("/getburung", (req, res) => {
   });
 });
 
+//add burung
+router.post("/add", (req, res) => {
+  const newBurung = new Burung({
+    name: req.body.name,
+    jenis: req.body.jenis,
+    warna: req.body.warna,
+    deskripsi: req.body.deskripsi,
+    umur: req.body.umur,
+    jenis_kelamin: req.body.jenis_kelamin
+  });
+  newBurung.save().then(burungs => res.json(burungs));
+});
+
 // Search burung
 router.post("/carinama", (req, res) => {
   Burung.find({ name: req.body.name })
@@ -29,20 +42,8 @@ router.post("/carinama", (req, res) => {
     );
 });
 
-//show burung
-router.post("/show", (req, res) => {
-  const newBurung = new Burung({
-    name: req.body.name,
-    jenis: req.body.jenis,
-    warna: req.body.warna,
-    deskripsi: req.body.deskripsi,
-    umur: req.body.umur,
-    jenis_kelamin: req.body.jenis_kelamin
-  });
-  newBurung.save().then(burungs => res.json(burungs));
-});
+
 //detais burung
-//show burung
 router.post("/details", (req, res) => {
   const newBurung = new Burung({
     name: req.body.name,
