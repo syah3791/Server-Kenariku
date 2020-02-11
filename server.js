@@ -4,14 +4,18 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
+const cors = require('cors')
+const multer = require('multer');
 
 const app = express();
-app.use(function(req, res, next) {
+var nameFile = null;
+/*app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-});
+});*/
 // Body Parser
+app.use(cors());
 app.use(
   bodyParser.urlencoded({
     extended: true
@@ -61,6 +65,7 @@ require("./config/passport")(passport);
 app.use("/api/users", user);
 app.use("/api/burung", burung);
 app.use("/api/gallery", gallery);
+app.use('/img', express.static('./client/src/components/img/uploads/'));
 // app.use("/api/employees", karyawan);
 // app.use("/api/profile", profile);
 
@@ -72,6 +77,66 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
+
+// middlewares
+// Set storage engine
+const storage = multer.diskStorage({
+    destination: './client/src/components/img/uploads/',
+    filename: function (req, file, cb) {        
+        // null as first argument means no error
+        nameFile = Date.now() + '-' + file.originalname 
+        cb(null, nameFile)
+    }
+})
+// Init upload
+const upload = multer({
+    storage: storage, 
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter: function (req, file, cb) {
+        sanitizeFile(file, cb);
+    }
+}).single('files')
+
+// Handle the upload route
+app.post('/upload', (req, res) => {
+    // res.send('done');
+    upload(req, res, (err) => {
+        if (err){ 
+            return res.status(200).json({ success: false, data: err });
+        }else{
+            // If file is not selected
+            if (req.file == undefined) {
+              return res.status(200).json({ success: false, data: nameFile });
+            }else{
+              return res.status(200).json({ success: true, data: nameFile });
+            }
+        }
+    
+    })
+})
+function sanitizeFile(file, cb) {
+    // Define the allowed extension
+    let fileExts = ['png', 'jpg', 'jpeg', 'gif']
+    // Check allowed extensions
+    let isAllowedExt = fileExts.includes(file.originalname.split('.')[1].toLowerCase());
+    // Mime type must be an image
+    let isAllowedMimeType = file.mimetype.startsWith("image/")
+    if (isAllowedExt && isAllowedMimeType) {
+        return cb(null, true) // no errors
+    }
+    else {
+        // pass error msg to callback, which can be displaye in frontend
+        cb('Error: File type not allowed or to large (Max 1MB)!')
+    }
+}
+
+// Global variables
+app.use((req, res, next) => {
+    app.locals.format = format;
+    next();
+});
 
 const port = process.env.PORT || 5000;
 
