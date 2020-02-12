@@ -27,6 +27,8 @@ app.use(bodyParser.json());
 const user = require("./routes/api/User");
 const burung = require("./routes/api/burung");
 const gallery = require("./routes/api/gallery");
+const report = require("./routes/api/report");
+const finance = require("./routes/api/finance");
 // const karyawan = require("./routes/api/employees");
 // const profile = require("./routes/api/profile");
 
@@ -65,6 +67,8 @@ require("./config/passport")(passport);
 app.use("/api/users", user);
 app.use("/api/burung", burung);
 app.use("/api/gallery", gallery);
+app.use("/api/report", report);
+app.use("/api/finance", finance);
 app.use('/img', express.static('./client/src/components/img/uploads/'));
 // app.use("/api/employees", karyawan);
 // app.use("/api/profile", profile);
@@ -132,11 +136,6 @@ function sanitizeFile(file, cb) {
     }
 }
 
-// Global variables
-app.use((req, res, next) => {
-    app.locals.format = format;
-    next();
-});
 
 const port = process.env.PORT || 5000;
 

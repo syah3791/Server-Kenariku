@@ -1,32 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const KontolSchema = new Schema({
-  name: {
-    type: String,
-    required: true
+const FinanceSchema = new Schema({
+  tanggal: {
+    type: Date,
+    default: Date.now
   },
-  deskripsi: {
+  idBird: {
     type: String,
     default: true
   },
-  jenis: {
+  pembeli: {
     type: String,
     required: true
   },
-  umur: {
-    type: String,
-    required: true
-  },
-  warna: {
-    type: String,
-    required: true
-  },
-
-  jenis_kelamin: {
+  harga: {
     type: String,
     required: true
   }
 });
 
-module.exports = Kontol = mongoose.model("kontol", KontolSchema);
+module.exports = Finance = mongoose.model("finance", FinanceSchema);

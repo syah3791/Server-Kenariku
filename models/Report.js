@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReportSchema = new Schema({
+  nama: {
+    type: String,
+    required: true
+  },
   tanggal: {
     type: Date,
     default: Date.now
@@ -9,12 +13,12 @@ const ReportSchema = new Schema({
   jam: {
     type: String,
     required: true
-  },
-  pakan: {
+  },  
+  log: {
     type: String,
     required: true
   },
-  log: {
+  pakan: {
     type: String,
     required: true
   },
