@@ -29,6 +29,7 @@ const burung = require("./routes/api/burung");
 const gallery = require("./routes/api/gallery");
 const report = require("./routes/api/report");
 const finance = require("./routes/api/finance");
+const breeding = require("./routes/api/breeding");
 // const karyawan = require("./routes/api/employees");
 // const profile = require("./routes/api/profile");
 
@@ -69,6 +70,7 @@ app.use("/api/burung", burung);
 app.use("/api/gallery", gallery);
 app.use("/api/report", report);
 app.use("/api/finance", finance);
+app.use("/api/breeding", breeding);
 app.use('/img', express.static('./client/src/components/img/uploads/'));
 // app.use("/api/employees", karyawan);
 // app.use("/api/profile", profile);

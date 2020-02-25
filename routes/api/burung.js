@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Burung = require("../../models/Burung");
+const Report = require("../../models/Report");
 
 // get
 router.get("/getburung", (req, res) => {
@@ -19,8 +20,9 @@ router.post("/add", (req, res) => {
     deskripsi: req.body.deskripsi,
     umur: req.body.umur,
     harga: req.body.harga,
-    status: req.body.status,
     jenis_kelamin: req.body.jenis_kelamin,
+    status: 1,
+    breeding: 0,
     image1: req.body.image1,
     image2: req.body.image2,
     image3: req.body.image3
@@ -60,8 +62,9 @@ router.put("/update/:id", (req, res) => {
           deskripsi: req.body.deskripsi,
           umur: req.body.umur,          
           harga: req.body.harga,
-          status: req.body.status,
+          status: 1,
           jenis_kelamin: req.body.jenis_kelamin,
+          breeding: 0,
           image1: req.body.image1,
           image2: req.body.image2,
           image3: req.body.image3
@@ -72,6 +75,20 @@ router.put("/update/:id", (req, res) => {
       console.log(err);
       res.status(404).json({ success: false });
     });
+});
+//find report
+router.get("/findReport/:id", (req, res) => {
+  Burung.findById(req.params.id)
+    .then(hasil => {
+      Report.find({nama: hasil.name},).sort({tanggal:-1, jam: -1}).then(burungs => {
+    return res.status(200).json({ success: true, data: burungs });
+  });
+    })
+    .catch(err =>
+      res.status(400).json({
+        message: "Not Found!"
+      })
+    );
 });
 
 router.delete("/delete/:id", (req, res) => {

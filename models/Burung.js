@@ -34,6 +34,10 @@ const BurungSchema = new Schema({
     type: String,
     required: true
   },
+  breeding: {
+    type: String,
+    required: true
+  },
   image1: {
     type: String,
     required: true
