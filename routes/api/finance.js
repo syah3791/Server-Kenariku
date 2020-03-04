@@ -13,20 +13,80 @@ router.get("/getburung", (req, res) => {
 
 // get
 router.get("/get", (req, res) => {
-  Report.find()
-    .sort({ tanggal: -1 })
+  Report.aggregate(
+   [
+     {
+       $group:
+         {
+           _id: { month: { $month: "$tanggal"}, year: { $year: "$tanggal" } },
+           pengeluaran: { $sum: "$out" },
+           pendapatan: { $sum: "$in" },
+           count: { $sum: 1 }
+         }
+     }
+   ]
+).sort({ _id: -1 })
+    .then(report => {
+      return res.status(200).json({ success: true, data: report });
+    });
+    
+});
+// get
+router.get("/getByMonth/:id", (req, res) => {
+  var temp = req.params.id.split("+");
+  Report.aggregate(
+    [
+      {$project : 
+        { 
+          day : { $dayOfMonth : "$tanggal" },
+          month : { $month : "$tanggal" },
+          year: { $year: "$tanggal" },
+          keterangan: 1,
+          in: 1,
+          out: 1,
+          status: 1
+        } 
+      },
+      { $match : { "month" : parseInt(temp[0]) , "year": parseInt(temp[1])}}
+    ]
+).sort({ _id: -1 })
     .then(report => {
       return res.status(200).json({ success: true, data: report });
     });
 });
+//get id
+router.put("/getById/:id", (req, res) => {
+  Report.findById(req.params.id).then(burungs => {
+    return res.status(200).json({ success: true, data: burungs });
+  });
+});
+//get bird id
+router.put("/getBirdById/:id", (req, res) => {
+  Burung.findById(req.params.id).then(burungs => {
+    return res.status(200).json({ success: true, data: burungs });
+  });
+});
 
-//add burung
-router.post("/add", (req, res) => {
+//add pengeluaran
+router.post("/addPengeluaran", (req, res) => {
   const newFinance = new Finance({
+    status: 0,
     tanggal: req.body.tanggal,
+    out: req.body.nominal,
+    keterangan: req.body.keterangan    
+  });
+  newFinance.save().then(finances => res.json(finances));
+});
+
+//add pemasukkan
+router.post("/addPendapatan", (req, res) => {
+  const newFinance = new Finance({
+    status: 1,
+    tanggal: req.body.tanggal,
+    in: req.body.nominal,
+    keterangan: req.body.keterangan,
     idBird: req.body.idBird,
-    pembeli: req.body.pembeli,
-    harga: req.body.harga
+    pembeli: req.body.pembeli,    
   });
   newFinance.save().then(finances => res.json(finances));
 });

@@ -2,22 +2,35 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const FinanceSchema = new Schema({
+  status: {
+    type: String,
+    required: true
+  },
   tanggal: {
     type: Date,
     default: Date.now
-  },
-  idBird: {
+  },  
+  keterangan: {
     type: String,
     default: true
   },
+  out: {
+    type: Number,
+    required: false
+  },
+  in: {
+    type: Number,
+    required: false
+  },
+  idBird: {
+    type: String,
+    default: false
+  },
   pembeli: {
     type: String,
-    required: true
+    required: false
   },
-  harga: {
-    type: String,
-    required: true
-  }
+  
 });
 
 module.exports = Finance = mongoose.model("finance", FinanceSchema);
