@@ -55,9 +55,9 @@ router.get("/getByMonth/:id", (req, res) => {
     });
 });
 //get id
-router.put("/getById/:id", (req, res) => {
-  Report.findById(req.params.id).then(burungs => {
-    return res.status(200).json({ success: true, data: burungs });
+router.get("/getById/:id", (req, res) => {
+  Report.findById(req.params.id).then(report => {
+    return res.status(200).json({ success: true, data: report });
   });
 });
 //get bird id

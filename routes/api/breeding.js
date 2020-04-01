@@ -38,8 +38,7 @@ router.post("/add", (req, res) => {
     betina: req.body.betina,
     jantan: req.body.jantan,
     imagebetina: req.body.imagebetina,
-    imagejantan: req.body.imagejantan,
-    deskripsi: req.body.deskripsi
+    imagejantan: req.body.imagejantan
   });
   newBreeding.save().then(Breedings => res.json(Breedings));
 });

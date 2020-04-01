@@ -14,8 +14,8 @@ const BurungSchema = new Schema({
     type: String,
     required: true
   },
-  umur: {
-    type: String,
+  tanggal: {
+    type: Date,
     required: true
   },
   warna: {

@@ -1,23 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const FinanceSchema = new Schema({
-  tanggal: {
-    type: Date,
-    default: Date.now
-  },
-  idBird: {
+const BatchSchema = new Schema({
+  idBreeding: {
     type: String,
     default: true
   },
-  pembeli: {
+  nama: {
     type: String,
     required: true
   },
-  harga: {
+  status: {
     type: String,
     required: true
   }
 });
 
-module.exports = Finance = mongoose.model("finance", FinanceSchema);
+module.exports = Batch = mongoose.model("Batch", BatchSchema);

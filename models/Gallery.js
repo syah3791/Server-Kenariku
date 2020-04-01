@@ -2,28 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const GallerySchema = new Schema({
-  namaBurung: {
-    type: String,
-    required: true
-  },
-
   judul: {
     type: String,
-    required: true
+    default: true
   },
   deskripsi: {
     type: String,
-    default: true
+    required: true
   },
-  foto: {
+  audio: {
     type: String,
-    default: true
+    required: true
   },
-
-  date: {
-    type: Date,
-    default: Date.now
+  gambar: {
+    type: String,
+    required: true
   }
 });
 
-module.exports = Gallery = mongoose.model("gallery", GallerySchema);
+module.exports = Gallery = mongoose.model("Gallery", GallerySchema);

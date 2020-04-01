@@ -17,10 +17,6 @@ const BreedingSchema = new Schema({
   imagejantan: {
     type: String,
     required: true
-  },
-  deskripsi: {
-    type: String,
-    required: true
   }
 });
 
