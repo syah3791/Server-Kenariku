@@ -11,6 +11,23 @@ router.get("/getburung", (req, res) => {
   });
 });
 
+// get
+router.get("/checkburung/:id", (req, res) => {
+  Burung.find({name: req.params.id},{name: 1})
+    .then(hasil => {
+      if (hasil[0]) {
+        res.status(200).json({ success: true });
+      } else {
+        res.status(200).json({ success: false });
+      }
+    })
+    .catch(err =>
+      res.status(400).json({
+        success: true
+      })
+    );
+});
+
 //add burung
 router.post("/add", (req, res) => {
   const newBurung = new Burung({

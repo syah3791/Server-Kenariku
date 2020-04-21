@@ -3,11 +3,19 @@ const router = express.Router();
 
 const Report = require("../../models/Finance");
 const Burung = require("../../models/Burung");
+const Saldo = require("../../models/Saldo");
 
 // get
 router.get("/getburung", (req, res) => {
   Burung.find({ status: 1 }, { _id: 1, name: 1 }).then(burungs => {
     return res.status(200).json({ success: true, data: burungs });
+  });
+});
+
+// get
+router.get("/getSaldo", (req, res) => {
+  Saldo.findOne().then(saldo => {
+    return res.status(200).json({ success: true, data: saldo });
   });
 });
 
@@ -69,6 +77,13 @@ router.put("/getBirdById/:id", (req, res) => {
 
 //add pengeluaran
 router.post("/addPengeluaran", (req, res) => {
+  var temp = 0;
+  Saldo.findOne().then(saldo => {
+    console.log(saldo.saldo);
+    temp = saldo.saldo-parseInt(req.body.nominal);
+    console.log(temp);
+    saldo.updateOne({saldo: temp}).then();
+  });
   const newFinance = new Finance({
     status: 0,
     tanggal: req.body.tanggal,
@@ -80,6 +95,13 @@ router.post("/addPengeluaran", (req, res) => {
 
 //add pemasukkan
 router.post("/addPendapatan", (req, res) => {
+  var temp = 0;
+  Saldo.findOne().then(saldo => {
+    console.log(saldo.saldo);
+    temp = parseInt(saldo.saldo)+parseInt(req.body.nominal);
+    console.log(temp);
+    saldo.updateOne({saldo: temp.toString()}).then();
+  });
   const newFinance = new Finance({
     status: 1,
     tanggal: req.body.tanggal,
